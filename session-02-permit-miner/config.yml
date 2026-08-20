@@ -1,79 +1,116 @@
 # =====================================================================
-#  YOUR SETTINGS -- this is one of only two files you need to edit.
+#  SESSION 02 -- THE ONLY FILE YOU NEED TO EDIT.
 #
-#  How to edit: click this file, then use the Source Control / Commit
-#  button in the left sidebar to save your changes.
+#  Everything about your postcard run lives here: where the permits
+#  come from, who you are, what you sell, and which logo goes on the
+#  card. Edit it right in the browser, then use the Source Control /
+#  Commit button in the left sidebar to save.
+#
+#  Keep the quotes, the dashes and the indents exactly as they are.
 # =====================================================================
 
-# ---------------------------------------------------------------------
-# WHERE YOUR PERMITS COME FROM.
-#
-# Thousands of US cities and counties publish their building permits on
-# a free "open data" portal. They nearly all use the same software, so
-# your miner can read any of them once you know two things: the portal
-# address, and the dataset id.
-#
-# The three below are real, large, working permit datasets, so the
-# miner runs for everyone on the very first click -- even before you
-# change anything.
-#
-# TO MAKE IT YOURS (this is the whole point of Step 2):
-#   1. Google: "<your city> open data building permits"
-#   2. Open the dataset page. The address will look like
-#      https://data.yourcity.gov/Housing/Building-Permits/ab12-cd34
-#   3. The portal is the part after https:// and before the next slash
-#      ( data.yourcity.gov ). The dataset id is the last chunk of
-#      letters-and-numbers with a dash in the middle ( ab12-cd34 ).
-#   4. Replace one of the three blocks below with yours. Keep the
-#      dashes, the two-space indents, and the quotes exactly as they are.
-#
-# If your city isn't on a portal yet, leave these as they are: you'll
-# still see exactly how the miner thinks, using another city's permits.
-# ---------------------------------------------------------------------
-sources:
-  - name: "Chicago, IL"
-    portal: "data.cityofchicago.org"
-    dataset: "ydr8-5enu"
 
-  - name: "Austin, TX"
-    portal: "data.austintexas.gov"
-    dataset: "3syk-w9eu"
+# =====================================================================
+#  1. YOUR COMPANY  --  this is what gets printed on the postcard.
+# =====================================================================
+company:
+  name: "Your Company Name"
+  tagline: "Smart homes, done right."
+  phone: "(555) 555-0100"
+  website: "yourcompany.com"
 
-  - name: "Los Angeles, CA"
-    portal: "data.lacity.org"
-    dataset: "nbyu-2ha9"
+  # The city/region you want printed under your name.
+  location: "Richmond, Virginia"
 
-# ---------------------------------------------------------------------
-# HOW FAR BACK TO LOOK, and how many permits to hand to Claude.
+
+# =====================================================================
+#  2. WHAT YOU SELL  --  Claude uses this to score every permit.
 #
-# Most portals post permits a few days late, so 30 days is a safe
-# window. Raise it if your city is slow; lower it if you get too many.
-# ---------------------------------------------------------------------
+#  Be specific. "Lighting" scores worse than "tunable white lighting
+#  and motorized shades". The more concrete this list is, the better
+#  the match, because Claude is comparing these words against what the
+#  permit actually says is being built.
+# =====================================================================
+services:
+  - "Whole-home audio and video distribution"
+  - "Home theater and media room design"
+  - "Lighting control and motorized shades"
+  - "Structured wiring and enterprise-grade home networking"
+  - "Security cameras and access control"
+  - "Outdoor audio and landscape lighting"
+
+
+# =====================================================================
+#  3. YOUR LOGO
+#
+#  A placeholder logo ships with this repo so your first run works
+#  before you upload anything.
+#
+#  To use your own: in the GitHub web editor, right-click the "brand"
+#  folder in the left sidebar, choose Upload..., and pick your file.
+#  Then change the name below to match your file exactly.
+#
+#  PNG with a transparent background looks best. Big is fine, it gets
+#  scaled down. If the file is missing, the run still finishes and
+#  prints your company name instead.
+# =====================================================================
+logo_path: "brand/logo.png"
+
+
+# =====================================================================
+#  4. WHERE THE PERMITS COME FROM
+#
+#  Building permits are public. Most large US counties and cities
+#  publish them on a free open-data portal, and they nearly all run the
+#  same software, so this miner can read any of them from two values.
+#
+#  This ships pointed at Austin, Texas so your very first run works
+#  before you change anything.
+#
+#  TO POINT IT AT YOUR AREA:
+#    1. Open counties.md in this folder. If your area is listed, copy
+#       its two values in below. Done.
+#    2. If it isn't, Google "<your county> open data building permits".
+#       You want a government page with an API button on it.
+#       The web address looks like:
+#         https://data.yourcounty.gov/Housing/Building-Permits/ab12-cd34
+#       portal  = data.yourcounty.gov   (between // and the next / )
+#       dataset = ab12-cd34             (the very last chunk)
+#
+#  Not every county publishes permits. If yours doesn't, leave this
+#  alone: the run still works and you will see exactly how the scoring
+#  behaves on another area's permits.
+# =====================================================================
+permit_source:
+  place: "Austin, Texas"
+  portal: "data.austintexas.gov"
+  dataset: "3syk-w9eu"
+
+# How many days back to look. Portals publish a few days late, so 30 is
+# a safe starting point. Widen it if your area is quiet.
 lookback_days: 30
-max_permits: 40
 
-# ---------------------------------------------------------------------
-# THE MONEY LINE.
+# How many permits to hand to Claude for scoring. Keeping this modest
+# is what keeps your Anthropic cost to pennies per run.
+max_permits: 25
+
+
+# =====================================================================
+#  5. WHICH PERMITS COUNT AS YOURS
 #
-# A permit has to declare at least this much work to be worth a stamp.
-# This is the single most powerful dial in the file: raise it and you
-# get fewer, richer jobs; lower it and you get more noise.
-#
-# Some cities leave the dollar value blank on every permit. If your run
-# says most permits had no dollar value, set keep_permits_without_value
-# to true and lean on the words instead.
-# ---------------------------------------------------------------------
+#  This is the part worth arguing with. It is your sales judgment,
+#  written down as words and a dollar figure.
+# =====================================================================
+
+# The money line: a permit must declare at least this much work.
 minimum_job_value: 75000
+
+# Some areas leave the dollar column blank on every permit. If your run
+# says most permits had no dollar value, flip this to true and let the
+# words do the work instead.
 keep_permits_without_value: false
 
-# ---------------------------------------------------------------------
-# THE WORDS THAT QUALIFY A JOB.
-#
-# A permit only survives if its description mentions one of these. This
-# is your trade: edit this list until it sounds like the work you
-# actually want. A pool builder and a kitchen remodeler should have very
-# different lists here.
-# ---------------------------------------------------------------------
+# The work you want. A permit has to mention one of these to survive.
 wanted_work:
   - "new construction"
   - "new single family"
@@ -97,14 +134,8 @@ wanted_work:
   - "detached garage"
   - "guest house"
 
-# ---------------------------------------------------------------------
-# THE WORDS THAT KILL A JOB.
-#
-# Checked BEFORE the list above, and they always win. These are the
-# permits that look interesting but never turn into your kind of sale:
-# somebody else's commercial job, or a repair dressed up in project
-# words ("replace all deck boards" is not a deck job).
-# ---------------------------------------------------------------------
+# The work you never want. Checked FIRST, and it always wins. This is
+# how "replace all deck boards" stops pretending to be a deck job.
 unwanted_work:
   - "commercial"
   - "industrial"
@@ -135,19 +166,24 @@ unwanted_work:
   - "gutter"
   - "storage shed"
 
-# ---------------------------------------------------------------------
-# SKIP THE BUILDERS AND LANDLORDS.
-#
-# When the owner on the permit is a company, it is usually a developer
-# or an investor, not a homeowner you can sell to. Leave this on.
-# ---------------------------------------------------------------------
+# Permits pulled by an LLC are usually a builder or a landlord, not a
+# homeowner you can sell to. Set to false if you sell to builders.
 skip_company_owners: true
 
-# ---------------------------------------------------------------------
-# WHERE YOUR CALL LIST GETS DELIVERED.
+
+# =====================================================================
+#  6. THE POSTCARD
 #
-# IMPORTANT: use the SAME email address you used to sign up for your
-# free Resend account. The free tier only delivers to that address.
-# Replace the placeholder below, keep the quotes.
-# ---------------------------------------------------------------------
-email: "you@example.com"
+#  Nothing is mailed. The run produces front and back images plus a
+#  PDF that you download from the Actions page and look at.
+# =====================================================================
+postcard:
+  # Printed size in inches. 6x4 is a standard postcard; 6x9 and 6x11
+  # are the common oversized mailers.
+  size: "6x4"
+
+  # Your accent colour, as a hex code. Used for the banner and rules.
+  accent_color: "#1F4E79"
+
+  # How many of the top-scoring permits to render. One card per permit.
+  render_top: 1
