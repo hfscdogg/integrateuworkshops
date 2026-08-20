@@ -1,0 +1,153 @@
+# =====================================================================
+#  YOUR SETTINGS -- this is one of only two files you need to edit.
+#
+#  How to edit: click this file, then use the Source Control / Commit
+#  button in the left sidebar to save your changes.
+# =====================================================================
+
+# ---------------------------------------------------------------------
+# WHERE YOUR PERMITS COME FROM.
+#
+# Thousands of US cities and counties publish their building permits on
+# a free "open data" portal. They nearly all use the same software, so
+# your miner can read any of them once you know two things: the portal
+# address, and the dataset id.
+#
+# The three below are real, large, working permit datasets, so the
+# miner runs for everyone on the very first click -- even before you
+# change anything.
+#
+# TO MAKE IT YOURS (this is the whole point of Step 2):
+#   1. Google: "<your city> open data building permits"
+#   2. Open the dataset page. The address will look like
+#      https://data.yourcity.gov/Housing/Building-Permits/ab12-cd34
+#   3. The portal is the part after https:// and before the next slash
+#      ( data.yourcity.gov ). The dataset id is the last chunk of
+#      letters-and-numbers with a dash in the middle ( ab12-cd34 ).
+#   4. Replace one of the three blocks below with yours. Keep the
+#      dashes, the two-space indents, and the quotes exactly as they are.
+#
+# If your city isn't on a portal yet, leave these as they are: you'll
+# still see exactly how the miner thinks, using another city's permits.
+# ---------------------------------------------------------------------
+sources:
+  - name: "Chicago, IL"
+    portal: "data.cityofchicago.org"
+    dataset: "ydr8-5enu"
+
+  - name: "Austin, TX"
+    portal: "data.austintexas.gov"
+    dataset: "3syk-w9eu"
+
+  - name: "Los Angeles, CA"
+    portal: "data.lacity.org"
+    dataset: "nbyu-2ha9"
+
+# ---------------------------------------------------------------------
+# HOW FAR BACK TO LOOK, and how many permits to hand to Claude.
+#
+# Most portals post permits a few days late, so 30 days is a safe
+# window. Raise it if your city is slow; lower it if you get too many.
+# ---------------------------------------------------------------------
+lookback_days: 30
+max_permits: 40
+
+# ---------------------------------------------------------------------
+# THE MONEY LINE.
+#
+# A permit has to declare at least this much work to be worth a stamp.
+# This is the single most powerful dial in the file: raise it and you
+# get fewer, richer jobs; lower it and you get more noise.
+#
+# Some cities leave the dollar value blank on every permit. If your run
+# says most permits had no dollar value, set keep_permits_without_value
+# to true and lean on the words instead.
+# ---------------------------------------------------------------------
+minimum_job_value: 75000
+keep_permits_without_value: false
+
+# ---------------------------------------------------------------------
+# THE WORDS THAT QUALIFY A JOB.
+#
+# A permit only survives if its description mentions one of these. This
+# is your trade: edit this list until it sounds like the work you
+# actually want. A pool builder and a kitchen remodeler should have very
+# different lists here.
+# ---------------------------------------------------------------------
+wanted_work:
+  - "new construction"
+  - "new single family"
+  - "addition"
+  - "renovation"
+  - "remodel"
+  - "pool"
+  - "deck"
+  - "patio"
+  - "porch"
+  - "sunroom"
+  - "outdoor kitchen"
+  - "kitchen"
+  - "bathroom"
+  - "master suite"
+  - "basement"
+  - "media room"
+  - "theater"
+  - "wine cellar"
+  - "elevator"
+  - "detached garage"
+  - "guest house"
+
+# ---------------------------------------------------------------------
+# THE WORDS THAT KILL A JOB.
+#
+# Checked BEFORE the list above, and they always win. These are the
+# permits that look interesting but never turn into your kind of sale:
+# somebody else's commercial job, or a repair dressed up in project
+# words ("replace all deck boards" is not a deck job).
+# ---------------------------------------------------------------------
+unwanted_work:
+  - "commercial"
+  - "industrial"
+  - "tenant"
+  - "multi-family"
+  - "multifamily"
+  - "apartment"
+  - "mixed use"
+  - "mixed-use"
+  - "lot grading"
+  - "land disturbance"
+  - "sitework"
+  - "cell tower"
+  - "repair"
+  - "replace"
+  - "reroof"
+  - "re-roof"
+  - "roofing"
+  - "shingle"
+  - "siding"
+  - "water heater"
+  - "waterproof"
+  - "foundation"
+  - "insulation"
+  - "mold"
+  - "remediation"
+  - "demolition"
+  - "gutter"
+  - "storage shed"
+
+# ---------------------------------------------------------------------
+# SKIP THE BUILDERS AND LANDLORDS.
+#
+# When the owner on the permit is a company, it is usually a developer
+# or an investor, not a homeowner you can sell to. Leave this on.
+# ---------------------------------------------------------------------
+skip_company_owners: true
+
+# ---------------------------------------------------------------------
+# WHERE YOUR CALL LIST GETS DELIVERED.
+#
+# IMPORTANT: use the SAME email address you used to sign up for your
+# free Resend account. The free tier only delivers to that address.
+# Replace the placeholder below, keep the quotes.
+# ---------------------------------------------------------------------
+email: "you@example.com"

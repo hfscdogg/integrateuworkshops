@@ -1,4 +1,4 @@
-# Your Morning Intel Scout
+# Session 01: Your Morning Intel Scout
 
 Every morning at 7 AM Eastern, this repository reads three news feeds you
 choose, asks Claude (an AI) to find the opportunities worth a phone call
@@ -10,6 +10,10 @@ secrets, one button.
 a GitHub account, an Anthropic account with an API key and about 5
 dollars of credit (console.anthropic.com), and a Resend account with an
 API key (resend.com). Keep both keys somewhere you can copy from.
+
+**Looking for Session 02?** The Permit Miner lives in the
+[session-02-permit-miner](session-02-permit-miner/) folder and has
+its own README. It reuses the same two secrets as this one.
 
 ---
 
