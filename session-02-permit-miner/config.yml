@@ -1,0 +1,189 @@
+# =====================================================================
+#  SESSION 02 -- THE ONLY FILE YOU NEED TO EDIT.
+#
+#  Everything about your postcard run lives here: where the permits
+#  come from, who you are, what you sell, and which logo goes on the
+#  card. Edit it right in the browser, then use the Source Control /
+#  Commit button in the left sidebar to save.
+#
+#  Keep the quotes, the dashes and the indents exactly as they are.
+# =====================================================================
+
+
+# =====================================================================
+#  1. YOUR COMPANY  --  this is what gets printed on the postcard.
+# =====================================================================
+company:
+  name: "Your Company Name"
+  tagline: "Smart homes, done right."
+  phone: "(555) 555-0100"
+  website: "yourcompany.com"
+
+  # The city/region you want printed under your name.
+  location: "Richmond, Virginia"
+
+
+# =====================================================================
+#  2. WHAT YOU SELL  --  Claude uses this to score every permit.
+#
+#  Be specific. "Lighting" scores worse than "tunable white lighting
+#  and motorized shades". The more concrete this list is, the better
+#  the match, because Claude is comparing these words against what the
+#  permit actually says is being built.
+# =====================================================================
+services:
+  - "Whole-home audio and video distribution"
+  - "Home theater and media room design"
+  - "Lighting control and motorized shades"
+  - "Structured wiring and enterprise-grade home networking"
+  - "Security cameras and access control"
+  - "Outdoor audio and landscape lighting"
+
+
+# =====================================================================
+#  3. YOUR LOGO
+#
+#  A placeholder logo ships with this repo so your first run works
+#  before you upload anything.
+#
+#  To use your own: in the GitHub web editor, right-click the "brand"
+#  folder in the left sidebar, choose Upload..., and pick your file.
+#  Then change the name below to match your file exactly.
+#
+#  PNG with a transparent background looks best. Big is fine, it gets
+#  scaled down. If the file is missing, the run still finishes and
+#  prints your company name instead.
+# =====================================================================
+logo_path: "brand/logo.png"
+
+
+# =====================================================================
+#  4. WHERE THE PERMITS COME FROM
+#
+#  Building permits are public. Most large US counties and cities
+#  publish them on a free open-data portal, and they nearly all run the
+#  same software, so this miner can read any of them from two values.
+#
+#  This ships pointed at Austin, Texas so your very first run works
+#  before you change anything.
+#
+#  TO POINT IT AT YOUR AREA:
+#    1. Open counties.md in this folder. If your area is listed, copy
+#       its two values in below. Done.
+#    2. If it isn't, Google "<your county> open data building permits".
+#       You want a government page with an API button on it.
+#       The web address looks like:
+#         https://data.yourcounty.gov/Housing/Building-Permits/ab12-cd34
+#       portal  = data.yourcounty.gov   (between // and the next / )
+#       dataset = ab12-cd34             (the very last chunk)
+#
+#  Not every county publishes permits. If yours doesn't, leave this
+#  alone: the run still works and you will see exactly how the scoring
+#  behaves on another area's permits.
+# =====================================================================
+permit_source:
+  place: "Austin, Texas"
+  portal: "data.austintexas.gov"
+  dataset: "3syk-w9eu"
+
+# How many days back to look. Portals publish a few days late, so 30 is
+# a safe starting point. Widen it if your area is quiet.
+lookback_days: 30
+
+# How many permits to hand to Claude for scoring. Keeping this modest
+# is what keeps your Anthropic cost to pennies per run.
+max_permits: 25
+
+
+# =====================================================================
+#  5. WHICH PERMITS COUNT AS YOURS
+#
+#  This is the part worth arguing with. It is your sales judgment,
+#  written down as words and a dollar figure.
+# =====================================================================
+
+# The money line: a permit must declare at least this much work.
+minimum_job_value: 75000
+
+# Some areas leave the dollar column blank on every permit. If your run
+# says most permits had no dollar value, flip this to true and let the
+# words do the work instead.
+keep_permits_without_value: false
+
+# The work you want. A permit has to mention one of these to survive.
+wanted_work:
+  - "new construction"
+  - "new single family"
+  - "addition"
+  - "renovation"
+  - "remodel"
+  - "pool"
+  - "deck"
+  - "patio"
+  - "porch"
+  - "sunroom"
+  - "outdoor kitchen"
+  - "kitchen"
+  - "bathroom"
+  - "master suite"
+  - "basement"
+  - "media room"
+  - "theater"
+  - "wine cellar"
+  - "elevator"
+  - "detached garage"
+  - "guest house"
+
+# The work you never want. Checked FIRST, and it always wins. This is
+# how "replace all deck boards" stops pretending to be a deck job.
+unwanted_work:
+  - "commercial"
+  - "industrial"
+  - "tenant"
+  - "multi-family"
+  - "multifamily"
+  - "apartment"
+  - "mixed use"
+  - "mixed-use"
+  - "lot grading"
+  - "land disturbance"
+  - "sitework"
+  - "cell tower"
+  - "repair"
+  - "replace"
+  - "reroof"
+  - "re-roof"
+  - "roofing"
+  - "shingle"
+  - "siding"
+  - "water heater"
+  - "waterproof"
+  - "foundation"
+  - "insulation"
+  - "mold"
+  - "remediation"
+  - "demolition"
+  - "gutter"
+  - "storage shed"
+
+# Permits pulled by an LLC are usually a builder or a landlord, not a
+# homeowner you can sell to. Set to false if you sell to builders.
+skip_company_owners: true
+
+
+# =====================================================================
+#  6. THE POSTCARD
+#
+#  Nothing is mailed. The run produces front and back images plus a
+#  PDF that you download from the Actions page and look at.
+# =====================================================================
+postcard:
+  # Printed size in inches. 6x4 is a standard postcard; 6x9 and 6x11
+  # are the common oversized mailers.
+  size: "6x4"
+
+  # Your accent colour, as a hex code. Used for the banner and rules.
+  accent_color: "#1F4E79"
+
+  # How many of the top-scoring permits to render. One card per permit.
+  render_top: 1
