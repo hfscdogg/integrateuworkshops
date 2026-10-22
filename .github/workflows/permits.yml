@@ -1,0 +1,54 @@
+name: Permit Miner (Session 02)
+
+on:
+  workflow_dispatch:
+    inputs:
+      mail_confirmation:
+        description: >-
+          Leave this EMPTY. Only used for the optional mail scaffold,
+          which never sends anything.
+        required: false
+        default: ""
+
+permissions:
+  contents: read
+
+jobs:
+  miner:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    defaults:
+      run:
+        working-directory: session-02-permit-miner
+
+    steps:
+      - uses: actions/checkout@v4.2.2
+
+      - uses: actions/setup-python@v5.3.0
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Mine permits and draw your postcard
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          # Optional. Only raises the portal rate limit. See counties.md.
+          SOCRATA_APP_TOKEN: ${{ secrets.SOCRATA_APP_TOKEN }}
+          # Optional and inert. See the mail note in the README.
+          LOB_API_KEY: ${{ secrets.LOB_API_KEY }}
+          MAIL_CONFIRMATION: ${{ inputs.mail_confirmation }}
+        run: python permit_miner.py
+
+      - name: Upload your postcard preview
+        # Runs even if an earlier step failed, so a partial result is
+        # still downloadable.
+        if: always()
+        uses: actions/upload-artifact@v4.4.3
+        with:
+          name: postcard-preview
+          path: session-02-permit-miner/output/
+          if-no-files-found: warn
+          retention-days: 30

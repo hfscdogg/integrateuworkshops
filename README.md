@@ -1,4 +1,49 @@
-# Your Morning Intel Scout
+# IntegrateU Workshops
+
+Build-along sessions for custom integrators. Each one is a small,
+working system you fork, point at your own business, and run from the
+GitHub website. No local setup, no command line, no prior coding.
+
+Each session lives on its own and can be run without the other. If you
+already forked this repo for Session 01, press **Sync fork** on your
+fork to pick up Session 02 — your Session 01 setup keeps working
+untouched.
+
+## The sessions
+
+| | What it does | Where it lives | Guide |
+|---|---|---|---|
+| **Session 01**<br>Morning Intel Scout | Reads three news feeds you choose, has Claude find the opportunities worth a phone call, and emails you a brief. | this folder (repo root) | below on this page |
+| **Session 02**<br>Permit Miner | Pulls recent building permits for your area, has Claude score them against what you sell, and draws a branded postcard preview for the best one. Nothing is mailed. | [`session-02-permit-miner/`](session-02-permit-miner/) | [its own README](session-02-permit-miner/README.md) |
+
+## Which secrets each session needs
+
+Add these in **your own fork**, under **Settings > Secrets and
+variables > Actions > New repository secret**. Type the names exactly
+as written: all caps, underscores, no spaces.
+
+**Secrets do not copy over when you fork.** Even if you watched someone
+else set one up, you need your own in your own fork.
+
+| Secret name | Session 01 | Session 02 | Where you get it |
+|---|---|---|---|
+| `ANTHROPIC_API_KEY` | **Required** | **Required** | console.anthropic.com > API keys. Add about $5 of credit under Billing. |
+| `RESEND_API_KEY` | **Required** | not used | resend.com > API Keys. Free plan only delivers to the address you signed up with. |
+| `SOCRATA_APP_TOKEN` | not used | optional | Your permit portal's developer page. Only raises the rate limit. Everything works without it. See [counties.md](session-02-permit-miner/counties.md). |
+| `LOB_API_KEY` | not used | optional, inert | Not needed for the workshop. Session 02 contains no live mail send; see the mail note in its README. |
+
+If you did Session 01, your `ANTHROPIC_API_KEY` already covers Session
+02. There is nothing new to add.
+
+## What each session costs to run
+
+Pennies. A Session 01 brief and a Session 02 postcard run each use a
+fraction of a cent of Anthropic credit. Five dollars covers the
+workshop and months of use afterward.
+
+---
+
+# Session 01: Your Morning Intel Scout
 
 Every morning at 7 AM Eastern, this repository reads three news feeds you
 choose, asks Claude (an AI) to find the opportunities worth a phone call
